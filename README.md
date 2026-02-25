@@ -1,48 +1,74 @@
-# ✨ Zen Relief · 解压小游戏
+﻿# Zen Relief (Spring Boot)
 
-A beautiful, mobile-first stress-relief mini-game collection built with pure HTML, CSS, and JavaScript.
+Zen Relief has been refactored into a Java Spring Boot project.
 
-## 🎮 Game Modes
+## Tech Stack
 
-### 🫧 泡泡纸 (Bubble Wrap)
-Tap to pop satisfying bubbles on a colorful grid. Each pop triggers particle effects and sound feedback. Pop them all to win!
+- Java 21
+- Spring Boot 3 (Web)
+- Maven
+- Static frontend assets served from Spring (`src/main/resources/static`)
 
-### 🔮 弹力球 (Squishy Ball)
-Press and drag a soft, physics-based ball. It deforms realistically with spring physics and bounces back smoothly. Powered by Canvas API.
+## Project Structure
 
-### 🎨 解压切割 (Satisfying Slice)
-Tap colorful blocks to slice them in half. Each cut spawns two new pieces with fresh colors and particle effects. Slice until you can't anymore!
+- `pom.xml` - Maven + Spring Boot build config
+- `src/main/java/com/zenrelief/app/ZenReliefApplication.java` - application entry
+- `src/main/java/com/zenrelief/app/web/GameController.java` - game list + game content API
+- `src/main/java/com/zenrelief/app/web/LegacyGamesBlockController.java` - blocks legacy `/games/**` direct routes
+- `src/main/resources/application.properties` - app config
+- `src/main/resources/static/index.html` - single-page shell
+- `src/main/resources/static/index.js` - load game list + load selected game
+- `src/main/resources/static/style.css` - shell styles
+- `src/main/resources/gameassets/common.css` - shared game css
+- `src/main/resources/gameassets/js/common.js` - shared i18n/sfx/best-score helpers
+- `src/main/resources/gameassets/js/*.js` - game-specific logic (served through Java API)
 
-## 🛠 Tech Stack
+## Built-in Games
 
-- **HTML5** — Semantic structure
-- **CSS3** — Glassmorphism, CSS variables, smooth animations
-- **Vanilla JavaScript** — Canvas physics, Web Audio API for sound effects
-- **Zero dependencies** — No frameworks, no build tools needed
+- Bubble Wrap
+- Squishy Ball
+- Slice Studio (infinite cutting)
+- Rain Tap
+- Breath Ring
+- Sand Flow
+- Chain Pop
+- Scratch Card
+- Fidget Spinner
+- Zen Garden
+- Glow Doodle
+- Ripple Calm
+- Petal Drift
+- Wind Chime
 
-## 🚀 Getting Started
+Each game is an independent JS file under `src/main/resources/gameassets/js/` for easier maintenance.
 
-Simply open `index.html` in any modern browser — no build step required.
+## Language Support
+
+- Auto-detects device/browser language via `navigator.languages` and `Accept-Language`.
+- Supported locales: Chinese (`zh`), English (`en`), Japanese (`ja`).
+- Home page game list and in-game labels/hints/surprise phrases are localized.
+
+## Run
 
 ```bash
-# Or serve locally
-npx http-server . -p 8080
+mvn spring-boot:run
 ```
 
-## 📱 Mobile Optimized
+Open: `http://localhost:8080`
 
-- Touch-friendly with multi-touch support
-- Safe-area aware for notched devices
-- Responsive grid layout adapts to any screen size
+## Build Jar
 
-## 📸 Features
+```bash
+mvn clean package
+java -jar target/zen-relief-1.0.0.jar
+```
 
-- 🎵 Procedural sound effects (Web Audio API)
-- ✨ Particle burst animations on every interaction
-- 🌈 Randomized color palettes for each session
-- 🖼 Premium glassmorphism UI with floating gradient orbs
-- 🔄 Reset / refresh buttons to replay endlessly
+## Notes
 
-## 📄 License
+- The app now keeps the browser URL at `/` while switching games inside the page.
+- Game loading is done by Java API (`/api/game/{id}`), not direct page navigation.
+- Legacy direct game routes (`/games/**`) are blocked to reduce URL exposure.
+
+## License
 
 MIT
